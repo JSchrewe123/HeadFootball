@@ -4,7 +4,7 @@ const io = require("socket.io")(3000, {
     },
 });
 
-const { createGameState, gameLoop, getNewVelocity } = require('./game');
+const { createGameState, gameLoop, getNewDownVelocity } = require('./game');
 const { FRAME_RATE } = require('./constants');
 
 //for each player it contains the lobby they are in 1 -> 1
@@ -60,28 +60,38 @@ io.on('connection', socket => {
     //handling pressing buttons
     socket.on("keydown", handleKeyDown);
 
-    function handleKeyDown(keyCode){
+    function handleKeyDown(key){
+
+        if (!lobbies[socket.id]) {
+            return;
+        }
+        let room = lobbies[socket.id];
+        let state = states[room];
+        let playerNumber = socket.number;
+        let newVelocity = getNewDownVelocity(key, state, playerNumber);
+
+        if (newVelocity) {
+            if (newVelocity[0] === 'x') {
+                states[room].players[socket.number - 1].velocity.x = newVelocity[1];
+            } else if (newVelocity[0] === 'y'){
+                states[room].players[socket.number - 1].velocity.y = newVelocity[1];         
+            }
+        }
+
+    };
+
+    socket.on("keyup", handleKeyUp);
+
+    function handleKeyUp(key){
 
         if (!lobbies[socket.id]) {
             return;
         }
 
-        try {
-            keyCode = parseInt(keyCode);
-        } catch (e) {
-            console.error(e);
-            return;
-        }
-
-        let newVelocity = getNewVelocity(keyCode);
-
-        if (newVelocity) {
-            let room = lobbies[socket.id];
-            states[room].players[socket.number - 1].velocity = newVelocity;
-        }
+        let room = lobbies[socket.id];
+        states[room].players[socket.number - 1].velocity.x = 0;
 
     };
-
 
     //handling creating Game
     socket.on("createGame",(clientId) => {
@@ -102,8 +112,6 @@ function startGameInterval(room){
 
         if(!winner){
             io.to(room).emit("newState", JSON.stringify(state));
-            states[room].players[0].velocity = {x: 0, y:0};
-            states[room].players[1].velocity = {x: 0, y:0};
         } else {
             io.to(room).emit("gameOver");
             clearInterval(intervalId);
