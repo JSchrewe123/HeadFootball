@@ -13,7 +13,7 @@ let canvas, c;
 const pitch = document.createElement('img');
 pitch.src = './assets/football_pitch_1st_draft.jpg';
 const son1 = document.createElement('img');
-son1.src = './assets/son_traced.jpg';
+son1.src = './assets/son.jpg';
 const son2 = document.createElement('img');
 son2.src = './assets/son_invert.jpg';
 
@@ -97,6 +97,7 @@ function paintGame(state) {
     
     paintPlayer(state.players[0], 0);
     paintPlayer(state.players[1], 1);
+    paintBall(state.ball);
 };
 
 function paintPlayer(player, playerNum) {
@@ -107,6 +108,14 @@ function paintPlayer(player, playerNum) {
     } else {
         c.drawImage(son1, player.position.x, player.position.y, player.size, player.size);
     }
+};
+
+function paintBall(ball){
+    c.beginPath();
+    c.arc(ball.position.x, ball.position.y, ball.size, 0, 2 * Math.PI);
+    c.fillStyle = "red";
+    c.fill();
+    c.stroke();
 };
 
 function keydown(e){
