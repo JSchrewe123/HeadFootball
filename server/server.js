@@ -23,26 +23,33 @@ io.on('connection', socket => {
     //joining Room
     socket.on("joinRoom", room => {
         // checking if the room exists and then joining the user to that room
-        if (Object.values(lobbies).includes(room)) {
-            let count = 0;
-            Object.values(lobbies).forEach(element => {
-                if (element === room){
-                    count += 1;
-                }
-            });
-            if (count == 1){
-                socket.emit("successJoinRoom", room);
-                socket.join(room);
-                lobbies[socket.id] = room;
-                socket.number = 2;
-            } else {
-                socket.emit("roomFull");
-            }
-        } else {
-            socket.emit("roomNoExists"); 
+        if (!Object.values(lobbies).includes(room)) {
+            socket.emit("roomNoExists");
+            return; 
         }
-        
-        // console.log(room);
+
+        let count = 0;
+        Object.values(lobbies).forEach(element => {
+            if (element === room){
+                count += 1;
+            }
+        });
+
+        if (count > 1){
+            socket.emit("roomFull");
+            return;
+        } 
+
+        socket.emit("successJoinRoom", room);
+        socket.join(room);
+        lobbies[socket.id] = room;
+        socket.number = 2;
+
+        //start the game
+        startGameInterval(room);
+
+        socket.broadcast.to(room).emit("removeWait");
+
     });
 
     //creating new Room
@@ -53,6 +60,8 @@ io.on('connection', socket => {
         socket.join(roomId);
         socket.emit("createdRoom", roomId);
         socket.number = 1;
+        const state = createGameState();
+        states[roomId] = state;
         // console.log(lobbies[socket.id]);
     });
 

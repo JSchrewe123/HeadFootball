@@ -7,11 +7,13 @@ const createLobbyBtn = document.getElementById("createLobby");
 const createGameBtn = document.getElementById("createGame");
 const waitScreen = document.getElementById("waitScreen");
 
+let canvas, c;
+
 //loading assets
 const pitch = document.createElement('img');
 pitch.src = './assets/football_pitch_1st_draft.jpg';
 const son1 = document.createElement('img');
-son1.src = './assets/son.jpg';
+son1.src = './assets/son_traced.jpg';
 const son2 = document.createElement('img');
 son2.src = './assets/son_invert.jpg';
 
@@ -26,9 +28,10 @@ socket.on("newState", handleNewState);
 // handling joining room
 socket.on('successJoinRoom', room => {
     initialScreen.style.display = "none";
-    waitScreen.style.display = "block";
-    msg = "joined " + room;
-    displayMsg(msg);
+    // waitScreen.style.display = "block";
+    // msg = "joined " + room;
+    // displayMsg(msg);
+    init();
 });
 
 socket.on('roomFull', () => {
@@ -43,8 +46,13 @@ socket.on('roomNoExists', () => {
 socket.on('createdRoom', room => {
     initialScreen.style.display = "none";
     waitScreen.style.display = "block";
-    msg = "joined " + room;
+    msg = "Room code: " + room;
     displayMsg(msg);
+    init();
+});
+
+socket.on('removeWait', () => {
+    waitScreen.style.display = "none";
 });
 
 // button listeners
@@ -70,17 +78,17 @@ function displayMsg(msg) {
     document.getElementById("message").append(item);
 }
 
-
+function init() {
+    canvas = document.querySelector('canvas');
+    c = canvas.getContext('2d');
+    canvas.width = 1024;
+    canvas.height = 500;
+    
+    document.addEventListener('keydown', keydown);
+    document.addEventListener('keyup', keyup);
+}
 
 //code for game to be integrated
-const canvas = document.querySelector('canvas');
-const c = canvas.getContext('2d');
-
-document.addEventListener('keydown', keydown);
-document.addEventListener('keyup', keyup);
-
-canvas.width = 1024;
-canvas.height = 500;
 
 function paintGame(state) {
     // c.fillStyle = 'white';
