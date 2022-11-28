@@ -13,9 +13,9 @@ let canvas, c;
 const pitch = document.createElement('img');
 pitch.src = './assets/football_pitch_1st_draft.jpg';
 const son1 = document.createElement('img');
-son1.src = './assets/son.jpg';
+son1.src = './assets/son_shoe_bot_transparent.png';
 const son2 = document.createElement('img');
-son2.src = './assets/son_invert.jpg';
+son2.src = './assets/son_shoe_bot_transparent.png';
 
 //handling receiving msg
 socket.on('newMsg', msg => {
@@ -104,9 +104,9 @@ function paintPlayer(player, playerNum) {
     // c.fillStyle = player.colour;
     // c.fillRect(player.position.x, player.position.y, player.size, player.size);
     if (playerNum) {
-        c.drawImage(son2, player.position.x, player.position.y, player.size, player.size);   
+        c.drawImage(son2, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
     } else {
-        c.drawImage(son1, player.position.x, player.position.y, player.size, player.size);
+        c.drawImage(son1, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);
     }
 };
 
