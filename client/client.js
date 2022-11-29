@@ -16,6 +16,8 @@ const son1 = document.createElement('img');
 son1.src = './assets/son_shoe_bot_transparent.png';
 const son2 = document.createElement('img');
 son2.src = './assets/son_shoe_bot_transparent.png';
+const kickingSon = document.createElement('img');
+kickingSon.src = './assets/kicking_son.png';
 
 //handling receiving msg
 socket.on('newMsg', msg => {
@@ -95,19 +97,29 @@ function paintGame(state) {
     // c.fillRect(0,0,canvas.width,canvas.height);  
     c.drawImage(pitch, 0, 0, canvas.width, canvas.height);
     
-    paintPlayer(state.players[0], 0);
-    paintPlayer(state.players[1], 1);
+    paintPlayers(state);
     paintBall(state.ball);
 };
 
-function paintPlayer(player, playerNum) {
+function paintPlayers(state) {
     // c.fillStyle = player.colour;
     // c.fillRect(player.position.x, player.position.y, player.size, player.size);
-    if (playerNum) {
-        c.drawImage(son2, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+
+    //drawing player1
+    let player = state.players[0];
+    if (player.kicking) {
+        c.drawImage(kickingSon, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
     } else {
-        c.drawImage(son1, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);
-    }
+        c.drawImage(son2, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+    }  
+    
+    //drawing player2
+    player = state.players[1];
+    if (player.kicking) {
+        c.drawImage(kickingSon, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+    } else {
+        c.drawImage(son2, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+    }   
 };
 
 function paintBall(ball){

@@ -20,6 +20,7 @@ function createGameState() {
             colour: 'red',
             mass: 1,
             radius: 50,
+            kicking: false,
         },{
             position: {
                 x: 400,
@@ -33,7 +34,8 @@ function createGameState() {
             size: 100,
             colour: 'blue', 
             mass: 1,
-            radius: 50,           
+            radius: 50,
+            kicking: false,           
         }],
         ball: {
             position: {
@@ -69,11 +71,26 @@ function gameLoop(state){
 
     //handling collisions with playerOne and ball
     if (collision(ball, playerOne)) {
-        resolveCollision(playerOne, ball);
+        resolveBallCollision(playerOne, ball);
     }
     //handling collision with playerTwo and ball
     if (collision(ball, playerTwo)) {
-        resolveCollision(playerTwo, ball);
+        resolveBallCollision(playerTwo, ball);
+    }
+    //player on player collision
+    if (collision(playerOne, playerTwo)) {
+        resolvePlayerCollision(playerOne, playerTwo);
+        // console.log("player collision");
+    };
+
+    //handling kicking
+    if (playerOne.kicking) {
+        kickRight(playerOne, ball);
+        // console.log("player1 kicking");
+    }
+    if (playerTwo.kicking) {
+        kickLeft(playerTwo, ball);
+        // console.log("player2 kicking");
     }
 
     //no winning implemented so always just continue    
@@ -164,7 +181,7 @@ function collision(ball, player) {
   
 }
 
-function resolveCollision(particle, otherParticle) {
+function resolveBallCollision(particle, otherParticle) {
     const xVelocityDiff = particle.velocity.x - otherParticle.velocity.x;
     const yVelocityDiff = particle.velocity.y - otherParticle.velocity.y;
 
@@ -200,4 +217,25 @@ function rotate(vel, angle) {
     };
 
     return rotatedVelocities;
+}
+
+function resolvePlayerCollision(playerOne, playerTwo){
+    //need to implement
+};
+
+function kickRight(player, ball){
+    if(ball.position.x <= player.position.x +player.size && ball.position.x > player.position.x && ball.position.y + ball.size >= player.position.y && ball.position.y <= player.position.y + player.size + ball.size){
+        ball.velocity.y = Math.abs(ball.velocity.y) + 10
+        ball.velocity.x *= -1;
+        ball.velocity.x += 10;
+    }
+}
+    
+//2nd Player On right side
+function kickLeft(player, ball){
+    if(ball.position.x >= player.position.x - player.size && ball.position.x < player.position.x && ball.position.y + ball.size >= player.position.y && ball.position.y <= player.position.y + player.size + ball.size){
+        ball.velocity.y = Math.abs(ball.velocity.y) + 10
+        ball.velocity.x *= -1;
+        ball.velocity.x -= 10;
+    }
 }
