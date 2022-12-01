@@ -69,10 +69,6 @@ createLobbyBtn.addEventListener("click", function(e){
     });
 });
 
-createGameBtn.addEventListener('click', function(e){
-    socket.emit("createGame", socket.id);   
-});
-
 //displaying messages on screen
 function displayMsg(msg) {
     let item = document.createElement('p');
@@ -85,6 +81,8 @@ function init() {
     c = canvas.getContext('2d');
     canvas.width = 1024;
     canvas.height = 500;
+
+    // console.log(c);
     
     document.addEventListener('keydown', keydown);
     document.addEventListener('keyup', keyup);
