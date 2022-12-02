@@ -129,7 +129,6 @@ io.on('connection', socket => {
 
 function startGameInterval(room){
     const intervalId = setInterval(() => {
-
         let state = states[room];
         // const start = Date.now();
         const winner = gameLoop(state);

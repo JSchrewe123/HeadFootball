@@ -4,14 +4,17 @@ const initialScreen = document.getElementById("initialScreen");
 const joinRoomBtn = document.getElementById("joinRoom");
 const roomInput = document.getElementById("roomInput");
 const createLobbyBtn = document.getElementById("createLobby");
-const createGameBtn = document.getElementById("createGame");
 const waitScreen = document.getElementById("waitScreen");
+const gameScreen = document.getElementById("gameScreen");
+const timer = document.getElementById("timer");
+const playAgainBtn = document.getElementById("playAgain");
 
 let canvas, c;
+let time = 60;
 
 //loading assets
 const pitch = document.createElement('img');
-pitch.src = './assets/football_pitch_1st_draft.jpg';
+pitch.src = './assets/pitch_night.png';
 const son1 = document.createElement('img');
 son1.src = './assets/son_shoe_bot_transparent.png';
 const son2 = document.createElement('img');
@@ -57,6 +60,11 @@ socket.on('removeWait', () => {
     waitScreen.style.display = "none";
 });
 
+socket.on('gameOver', () => {
+    gameScreen.style.display = 'none';
+    endScreen.style.display = 'block';
+});
+
 // button listeners
 joinRoomBtn.addEventListener("click", function(e){
     room = roomInput.value;
@@ -69,6 +77,11 @@ createLobbyBtn.addEventListener("click", function(e){
     });
 });
 
+playAgainBtn.addEventListener("click", function(e){
+    location.reload()
+    return false;
+});
+
 //displaying messages on screen
 function displayMsg(msg) {
     let item = document.createElement('p');
@@ -77,6 +90,7 @@ function displayMsg(msg) {
 }
 
 function init() {
+    gameScreen.style.display = 'block';
     canvas = document.querySelector('canvas');
     c = canvas.getContext('2d');
     canvas.width = 1024;
@@ -91,6 +105,12 @@ function init() {
 //code for game to be integrated
 
 function paintGame(state) {
+    //update timer
+    if(state.time % 60 === 0){
+        time--;
+        timer.innerText = time;
+    }
+
     // c.fillStyle = 'white';
     // c.fillRect(0,0,canvas.width,canvas.height);  
     c.drawImage(pitch, 0, 0, canvas.width, canvas.height);
