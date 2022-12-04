@@ -139,7 +139,15 @@ function startGameInterval(room){
         if(!winner){
             io.to(room).emit("newState", JSON.stringify(state));
         } else {
-            io.to(room).emit("gameOver");
+            let victor = "draw";
+            //check for who had higher score and send that player back as winner
+            if (state.players[0].goalsScored > state.players[1].goalsScored) {
+                victor = "player1"
+            }else if (state.players[0].goalsScored < state.players[1].goalsScored){
+                victor = "player2"
+            }
+
+            io.to(room).emit("gameOver", victor);
             clearInterval(intervalId);
         }
     }, 1000 / FRAME_RATE);

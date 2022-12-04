@@ -6,6 +6,23 @@ module.exports = {
     stopPlayerMovement,
 }
 
+function resetGameState(state) {
+    let playerOne = state.players[0];
+    let playerTwo = state.players[1];
+
+    playerOne.position = {x: 100, y: 100};
+    playerOne.velocity = {x: 0, y: 0};
+    playerOne.ArrowRight.pressed = false;
+    playerOne.ArrowLeft.pressed = false;
+
+    playerTwo.position = {x: 400, y: 100};
+    playerTwo.velocity = {x: 0, y: 0};
+    playerTwo.ArrowRight.pressed = false;
+    playerTwo.ArrowLeft.pressed = false;
+
+
+}
+
 function createGameState() {
     return {
         players: [{
@@ -30,6 +47,7 @@ function createGameState() {
             mass: 1,
             radius: 50,
             kicking: false,
+            goalsScored: 0,
         },{
             position: {
                 x: 400,
@@ -49,7 +67,8 @@ function createGameState() {
             colour: 'blue', 
             mass: 1,
             radius: 50,  
-            kicking: false,         
+            kicking: false,  
+            goalsScored: 0,       
         }],
         ball: {
             position: {
@@ -114,8 +133,12 @@ function gameLoop(state){
     }
     updateBall(ball, playerOne, playerTwo);
 
+    // check for goal scored
 
-
+    //
+    // if goal scored increment goalsScored and resetGameState
+    //
+    
     //checking for endgame
     if (state.time == 60 * 60) { // 60 seconds * frame rate then the game will end
         return true;

@@ -8,6 +8,7 @@ const waitScreen = document.getElementById("waitScreen");
 const gameScreen = document.getElementById("gameScreen");
 const timer = document.getElementById("timer");
 const playAgainBtn = document.getElementById("playAgain");
+const score = document.getElementById("score");
 
 let canvas, c;
 let time = 60;
@@ -60,9 +61,11 @@ socket.on('removeWait', () => {
     waitScreen.style.display = "none";
 });
 
-socket.on('gameOver', () => {
+socket.on('gameOver', (victor) => {
     gameScreen.style.display = 'none';
     endScreen.style.display = 'block';
+    let victoryMsg = "winner: " + victor;
+    document.getElementById('victoryMsg').innerHTML = victoryMsg;
 });
 
 // button listeners
@@ -110,6 +113,10 @@ function paintGame(state) {
         time--;
         timer.innerText = time;
     }
+
+    //updating score
+    let scoreMsg = state.players[0].goalsScored + ":" + state.players[1].goalsScored;
+    score.innerHTML = scoreMsg;
 
     // c.fillStyle = 'white';
     // c.fillRect(0,0,canvas.width,canvas.height);  
