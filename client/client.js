@@ -17,11 +17,13 @@ let time = 60;
 const pitch = document.createElement('img');
 pitch.src = './assets/pitch_night.png';
 const son1 = document.createElement('img');
-son1.src = './assets/son_shoe_bot_transparent.png';
+son1.src = './assets/son.png';
 const son2 = document.createElement('img');
-son2.src = './assets/son_shoe_bot_transparent.png';
-const kickingSon = document.createElement('img');
-kickingSon.src = './assets/kicking_son.png';
+son2.src = './assets/son_flipped.png';
+const kickingSon1 = document.createElement('img');
+kickingSon1.src = './assets/kicking_son.png';
+const kickingSon2 = document.createElement('img');
+kickingSon2.src = './assets/kicking_son_flipped.png';
 
 //handling receiving msg
 socket.on('newMsg', msg => {
@@ -34,6 +36,7 @@ socket.on("newState", handleNewState);
 // handling joining room
 socket.on('successJoinRoom', room => {
     initialScreen.style.display = "none";
+    waitScreen.style.display = "none";
     // waitScreen.style.display = "block";
     // msg = "joined " + room;
     // displayMsg(msg);
@@ -52,9 +55,9 @@ socket.on('roomNoExists', () => {
 socket.on('createdRoom', room => {
     initialScreen.style.display = "none";
     waitScreen.style.display = "block";
-    msg = "Room code: " + room;
+    msg = "Your room code: " + room;
     displayMsg(msg);
-    init();
+    // init();
 });
 
 socket.on('removeWait', () => {
@@ -133,15 +136,15 @@ function paintPlayers(state) {
     //drawing player1
     let player = state.players[0];
     if (player.kicking) {
-        c.drawImage(kickingSon, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+        c.drawImage(kickingSon1, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
     } else {
-        c.drawImage(son2, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+        c.drawImage(son1, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
     }  
     
     //drawing player2
     player = state.players[1];
     if (player.kicking) {
-        c.drawImage(kickingSon, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+        c.drawImage(kickingSon2, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
     } else {
         c.drawImage(son2, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
     }   
