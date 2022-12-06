@@ -51,6 +51,7 @@ function createGameState() {
         radius: 50,
         kicking: false,
         goalsScored: 0,
+        ready: false,
       },
       {
         position: {
@@ -73,6 +74,7 @@ function createGameState() {
         radius: 50,
         kicking: false,
         goalsScored: 0,
+        ready: false,
       },
     ],
     ball: {

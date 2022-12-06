@@ -9,9 +9,12 @@ const gameScreen = document.getElementById("gameScreen");
 const timer = document.getElementById("timer");
 const playAgainBtn = document.getElementById("playAgain");
 const score = document.getElementById("score");
+const readyScreen = document.getElementById("readyScreen");
+const readyBtn = document.getElementById("readyButton");
 
 let canvas, c;
 let time = 60;
+let socketNumber;
 
 //loading assets
 const pitch = document.createElement('img');
@@ -37,9 +40,19 @@ socket.on("newState", handleNewState);
 socket.on('successJoinRoom', room => {
     initialScreen.style.display = "none";
     waitScreen.style.display = "none";
+    readyScreen.style.display = "block";
     // waitScreen.style.display = "block";
     // msg = "joined " + room;
     // displayMsg(msg);
+    // init();
+});
+
+socket.on("number", number=>{
+    socketNumber = 2;
+});
+
+socket.on('startGame', ()=>{
+    readyScreen.style.display = "none";
     init();
 });
 
@@ -52,17 +65,18 @@ socket.on('roomNoExists', () => {
 });
 
 //handling creating room
-socket.on('createdRoom', room => {
+socket.on('createdRoom', data => {
     initialScreen.style.display = "none";
     waitScreen.style.display = "block";
-    msg = "Your room code: " + room;
+    msg = "Your room code: " + data.room;
     displayMsg(msg);
+    socketNumber = data.number;
     // init();
 });
 
-socket.on('removeWait', () => {
-    waitScreen.style.display = "none";
-});
+// socket.on('removeWait', () => {
+//     waitScreen.style.display = "none";
+// });
 
 socket.on('gameOver', (victor) => {
     gameScreen.style.display = 'none';
@@ -86,6 +100,19 @@ createLobbyBtn.addEventListener("click", function(e){
 playAgainBtn.addEventListener("click", function(e){
     location.reload()
     return false;
+});
+
+readyBtn.addEventListener("click", function(e){
+    let val;
+    var ele = document.getElementsByName('playerSelect');
+    for (let i = 0; i  < ele.length; i++) {
+        if (ele[i].checked) {
+            val = ele[i].value;
+        }
+    }
+    console.log(val);
+    socket.emit("playerReady");
+    readyBtn.style.backgroundColor = "darkgrey";
 });
 
 //displaying messages on screen

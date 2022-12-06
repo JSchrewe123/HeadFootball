@@ -50,13 +50,11 @@ io.on("connection", (socket) => {
     lobbies[socket.id] = room;
     socket.number = 2;
 
+    socket.emit("number", 2);
     io.to(room).emit("successJoinRoom", room);
     // socket.broadcast.to(room).emit("successJoinRoom", room);
 
-    //start the game
-    startGameInterval(room);
-
-    socket.broadcast.to(room).emit("removeWait");
+    // socket.broadcast.to(room).emit("removeWait");
   });
 
   //creating new Room
@@ -70,7 +68,7 @@ io.on("connection", (socket) => {
     roomNames.push(roomId);
     lobbies[socket.id] = roomId;
     socket.join(roomId);
-    socket.emit("createdRoom", roomId);
+    socket.emit("createdRoom", {room: roomId, number: 1});
     socket.number = 1;
     const state = createGameState();
     states[roomId] = state;
@@ -111,6 +109,23 @@ io.on("connection", (socket) => {
       states[room].players[socket.number - 1].kicking = false;
     }
   }
+
+  socket.on("playerReady", ()=>{
+    let room = lobbies[socket.id];
+    let state = states[room];
+    let otherSocketNum = 1;
+    state.players[socket.number-1].ready = true;
+    if(socket.number === 1){
+      otherSocketNum = 2;
+    }
+    if(state.players[otherSocketNum -1].ready === true){
+      io.to(room).emit("startGame");
+      //start the game
+      startGameInterval(room);
+    }
+
+
+  });
 
   socket.on("disconnect", () => {
     console.log("disconnect: " + socket.id);
