@@ -110,16 +110,24 @@ io.on("connection", (socket) => {
     }
   }
 
-  socket.on("playerReady", ()=>{
+  socket.on("playerReady", (val)=>{
     let room = lobbies[socket.id];
     let state = states[room];
     let otherSocketNum = 1;
     state.players[socket.number-1].ready = true;
+    state.players[socket.number-1].char = val;
     if(socket.number === 1){
       otherSocketNum = 2;
     }
+
+    //assign char
+
     if(state.players[otherSocketNum -1].ready === true){
-      io.to(room).emit("startGame");
+      io.to(room).emit("startGame", {c1: state.players[0].char, c2: state.players[1].char});
+      //reset ready
+      state.players[0].ready = false;
+      state.players[1].ready = false;
+      
       //start the game
       startGameInterval(room);
     }
@@ -127,12 +135,18 @@ io.on("connection", (socket) => {
 
   });
 
+  socket.on("rematch", ()=>{
+    io.to(lobbies[socket.id]).emit("initRematch");
+  });
+
+
   socket.on("disconnect", () => {
     console.log("disconnect: " + socket.id);
     let room = lobbies[socket.id];
     delete lobbies[socket.id];
 
     let index = roomNames.indexOf(room);
+    //not sure what this next line actually does
     roomNames.splice(index, 1);
     if (!Object.values(lobbies).includes(room)) {
       delete states[room];

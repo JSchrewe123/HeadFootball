@@ -7,7 +7,8 @@ const createLobbyBtn = document.getElementById("createLobby");
 const waitScreen = document.getElementById("waitScreen");
 const gameScreen = document.getElementById("gameScreen");
 const timer = document.getElementById("timer");
-const playAgainBtn = document.getElementById("playAgain");
+const homeBtn = document.getElementById("home");
+const rematchBtn = document.getElementById("rematch");
 const score = document.getElementById("score");
 const readyScreen = document.getElementById("readyScreen");
 const readyBtn = document.getElementById("readyButton");
@@ -15,10 +16,18 @@ const readyBtn = document.getElementById("readyButton");
 let canvas, c;
 let time = 60;
 let socketNumber;
+let char1;
+let char2;
+let char1kick;
+let char2kick;
 
 //loading assets
+
+//pitch
 const pitch = document.createElement('img');
 pitch.src = './assets/pitch_night.png';
+
+//son
 const son1 = document.createElement('img');
 son1.src = './assets/son.png';
 const son2 = document.createElement('img');
@@ -27,6 +36,26 @@ const kickingSon1 = document.createElement('img');
 kickingSon1.src = './assets/kicking_son.png';
 const kickingSon2 = document.createElement('img');
 kickingSon2.src = './assets/kicking_son_flipped.png';
+
+//benzema
+const benzema1 = document.createElement('img');
+benzema1.src = './assets/benzema_shoe_right.png';
+const kickingBenzema1 = document.createElement('img');
+kickingBenzema1.src = './assets/benzema_shoe_up_right.png';
+const benzema2 = document.createElement('img');
+benzema2.src = './assets/benzema_shoe_left.png';
+const kickingBenzema2 = document.createElement('img');
+kickingBenzema2.src = './assets/benzema_shoe_up_left.png';
+
+//mbappe
+const mbappe1 = document.createElement('img');
+mbappe1.src = './assets/mbappe_shoe_right.png';
+const kickingMbappe1 = document.createElement('img');
+kickingMbappe1.src = './assets/mbappe_shoe_up_right.png';
+const mbappe2 = document.createElement('img');
+mbappe2.src = './assets/mbappe_shoe_left.png';
+const kickingMbappe2 = document.createElement('img');
+kickingMbappe2.src = './assets/mbappe_shoe_up_left.png';
 
 //handling receiving msg
 socket.on('newMsg', msg => {
@@ -48,11 +77,12 @@ socket.on('successJoinRoom', room => {
 });
 
 socket.on("number", number=>{
-    socketNumber = 2;
+    socketNumber = number;
 });
 
-socket.on('startGame', ()=>{
+socket.on('startGame', (chars)=>{
     readyScreen.style.display = "none";
+    assignChars(chars);
     init();
 });
 
@@ -97,9 +127,13 @@ createLobbyBtn.addEventListener("click", function(e){
     });
 });
 
-playAgainBtn.addEventListener("click", function(e){
+homeBtn.addEventListener("click", function(e){
     location.reload()
     return false;
+});
+
+rematchBtn.addEventListener("click", function(e){
+    socket.emit("rematch");
 });
 
 readyBtn.addEventListener("click", function(e){
@@ -111,7 +145,7 @@ readyBtn.addEventListener("click", function(e){
         }
     }
     console.log(val);
-    socket.emit("playerReady");
+    socket.emit("playerReady", val);
     readyBtn.style.backgroundColor = "darkgrey";
 });
 
@@ -163,17 +197,17 @@ function paintPlayers(state) {
     //drawing player1
     let player = state.players[0];
     if (player.kicking) {
-        c.drawImage(kickingSon1, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+        c.drawImage(char1kick, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
     } else {
-        c.drawImage(son1, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+        c.drawImage(char1, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
     }  
     
     //drawing player2
     player = state.players[1];
     if (player.kicking) {
-        c.drawImage(kickingSon2, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+        c.drawImage(char2kick, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
     } else {
-        c.drawImage(son2, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
+        c.drawImage(char2, player.position.x - player.radius, player.position.y - player.radius, player.size, player.size);   
     }   
 };
 
@@ -197,3 +231,43 @@ function handleNewState(gameState) {
     gameState = JSON.parse(gameState);
     requestAnimationFrame(() => paintGame(gameState));
 };
+
+function assignChars(chars){
+    switch (chars.c1) {
+        case "1":
+            char1 = son1;
+            char1kick = kickingSon1
+            break;
+        case "2":
+            char1 = benzema1;
+            char1kick = kickingBenzema1;
+            break;
+        case "3":
+            char1 = mbappe1;
+            char1kick = kickingMbappe1;
+            break;
+        default:
+            break;
+    }
+
+    //used flipped for c2 
+
+    switch (chars.c2) {
+        case "1":
+            char2 = son2;
+            char2kick = kickingSon2
+            break;
+        case "2":
+            char2 = benzema2;
+            char2kick = kickingBenzema2;
+            break;
+        case "3":
+            char2 = mbappe2;
+            char2kick = kickingMbappe2;
+            break;
+        default:
+            break;
+    }
+
+    // console.log({char1, char2});
+}

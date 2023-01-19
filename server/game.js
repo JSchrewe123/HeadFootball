@@ -52,6 +52,7 @@ function createGameState() {
         kicking: false,
         goalsScored: 0,
         ready: false,
+        char: 1,
       },
       {
         position: {
@@ -75,6 +76,7 @@ function createGameState() {
         kicking: false,
         goalsScored: 0,
         ready: false,
+        char: 1,
       },
     ],
     ball: {
