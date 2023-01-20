@@ -12,6 +12,11 @@ const rematchBtn = document.getElementById("rematch");
 const score = document.getElementById("score");
 const readyScreen = document.getElementById("readyScreen");
 const readyBtn = document.getElementById("readyButton");
+const rematchScreen = document.getElementById("rematchScreen");
+const waitRematchScreen = document.getElementById("waitRematchScreen");
+const endScreen = document.getElementById("endScreen");
+const acceptRematchBtn = document.getElementById("acceptRematch");
+const declineRematchBtn = document.getElementById("declineRematch");
 
 let canvas, c;
 let time = 60;
@@ -66,14 +71,23 @@ socket.on('newMsg', msg => {
 socket.on("newState", handleNewState);
 
 // handling joining room
-socket.on('successJoinRoom', room => {
+socket.on('successJoinRoom', ()=> {
     initialScreen.style.display = "none";
     waitScreen.style.display = "none";
+    waitRematchScreen.style.display = "none";
+    rematchScreen.style.display = "none";
     readyScreen.style.display = "block";
+    time = 60;
+    readyBtn.disabled = false;
     // waitScreen.style.display = "block";
     // msg = "joined " + room;
     // displayMsg(msg);
     // init();
+});
+
+socket.on('rematchRequest', ()=>{
+    endScreen.style.display = "none";
+    rematchScreen.style.display = "block";
 });
 
 socket.on("number", number=>{
@@ -102,6 +116,10 @@ socket.on('createdRoom', data => {
     displayMsg(msg);
     socketNumber = data.number;
     // init();
+});
+
+socket.on("restartClient", ()=>{
+    location.reload();
 });
 
 // socket.on('removeWait', () => {
@@ -134,6 +152,19 @@ homeBtn.addEventListener("click", function(e){
 
 rematchBtn.addEventListener("click", function(e){
     socket.emit("rematch");
+    //change to waiting for rematch screen
+    endScreen.style.display = "none";
+    waitRematchScreen.style.display = "block";
+});
+
+acceptRematchBtn.addEventListener("click", function(e){
+    socket.emit("rematchAccepted");
+});
+
+declineRematchBtn.addEventListener("click", function(e){
+    socket.emit("rematchDeclined");
+    location.reload();
+    return false;
 });
 
 readyBtn.addEventListener("click", function(e){
@@ -144,9 +175,8 @@ readyBtn.addEventListener("click", function(e){
             val = ele[i].value;
         }
     }
-    console.log(val);
     socket.emit("playerReady", val);
-    readyBtn.style.backgroundColor = "darkgrey";
+    readyBtn.disabled = true;
 });
 
 //displaying messages on screen

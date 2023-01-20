@@ -9,6 +9,7 @@ const {
   gameLoop,
   getNewDownVelocity,
   stopPlayerMovement,
+  resetGameState,
 } = require("./game");
 const { FRAME_RATE } = require("./constants");
 
@@ -50,7 +51,7 @@ io.on("connection", (socket) => {
     lobbies[socket.id] = room;
     socket.number = 2;
 
-    socket.emit("number", 2);
+    socket.broadcast.emit("number", 2);
     io.to(room).emit("successJoinRoom", room);
     // socket.broadcast.to(room).emit("successJoinRoom", room);
 
@@ -136,9 +137,24 @@ io.on("connection", (socket) => {
   });
 
   socket.on("rematch", ()=>{
-    io.to(lobbies[socket.id]).emit("initRematch");
+    socket.broadcast.emit("rematchRequest");
   });
 
+  socket.on("rematchAccepted", ()=>{
+    let room = lobbies[socket.id];
+    //rest game state object
+    let state = states[room];
+    state.players[0].goalsScored = 0;
+    state.players[1].goalsScored = 0;
+    state.time = 0;
+    resetGameState(state);
+
+    io.to(room).emit("successJoinRoom");
+  });
+
+  socket.on("rematchDeclined", ()=>{
+    socket.broadcast.emit("restartClient");
+  });
 
   socket.on("disconnect", () => {
     console.log("disconnect: " + socket.id);

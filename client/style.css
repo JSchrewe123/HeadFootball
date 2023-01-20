@@ -11,6 +11,16 @@ body{
     text-align: center;
 }
 
+#waitRematchScreen {
+    display: none;
+    text-align: center;
+}
+
+#rematchScreen {
+    display: none;
+    text-align: center;
+}
+
 #readyScreen {
     display: none;
 }

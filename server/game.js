@@ -3,6 +3,7 @@ module.exports = {
   gameLoop,
   getNewDownVelocity,
   stopPlayerMovement,
+  resetGameState,
 };
 
 function resetGameState(state) {
