@@ -1,2 +1,2 @@
 # Multiplayer browser game using socket.io 
-BY Filip Lukowski
+BY Jan Schrewe & Filip Lukowski
