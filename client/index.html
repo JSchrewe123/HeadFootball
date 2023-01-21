@@ -11,22 +11,22 @@
 
     <div id="initialScreen">
         <h1 id="welcome">HeadFootball</h1>
-        <div class="square"></div>
-        <button id="createLobby">create new lobby</button>
+        <div class="center"><button id="createLobby">create new lobby</button></div>
         <br>
-        <input id="roomInput" type="text"><button id="joinRoom">Join a lobby</button>
+        <div class="center"><input id="roomInput" type="text"></div>
         <br>
+        <div class="center"><button id="joinRoom">Join a lobby</button></div>
     </div>
 
     <div id="waitScreen">
-        <h1>Waiting for friend to Join!</h1>
-        <div id="message"></div>
+        <h1 class="whiteText">Waiting for friend to Join!</h1>
+        <div id="message" class="whiteText"></div>
         <!-- <button id="createGame">Create Game</button> -->
     </div>
 
     <!-- about to be added -->
     <div id="readyScreen">
-        <h1>Choose your hero!!</h1>
+        <h1 class="whiteText">Choose your hero!!</h1>
         <label>
             <input type="radio" value="1" name="playerSelect" checked="checked">
             <img src="./assets/son.png" style="width:200px;height:200px;">
@@ -43,24 +43,24 @@
     </div>
 
     <div id="waitRematchScreen">
-        <h1>Waiting for opponent to accept rematch!</h1>
+        <h1 class="whiteText">Waiting for opponent to accept rematch!</h1>
     </div>
 
     <div id="rematchScreen">
-        <h1>Opponent wants a rematch</h1>
+        <h1 class="whiteText">Opponent wants a rematch</h1>
         <button id="acceptRematch">Accept</button>
         <button id="declineRematch">Decline</button>
     </div>
 
     <div id="gameScreen">
-        <div id="timer">60</div>
-        <div id="score"></div>
+        <div id="timer" class="whiteText">60</div>
+        <div id="score" class="whiteText"></div>
         <canvas></canvas>
     </div>
 
     <div id="endScreen">
-        <h1>Thank you for playing!</h1>
-        <h1 id="victoryMsg"></h1>
+        <h1 class="whiteText">Thank you for playing!</h1>
+        <h1 id="victoryMsg" class="whiteText"></h1>
         <button id="home">Home</button>
         <button id="rematch">Rematch</button>
     </div>

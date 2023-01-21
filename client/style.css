@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nerko+One&display=swap');
 
 body{
-    background-color: gray;
+    background-color: #1A1A1D;
     /* min-width: 1500px; */
 
 }
@@ -27,6 +27,7 @@ body{
 
 #initalScreen {
     display: block;
+    text-align: center;
 }
 
 #gameScreen {
@@ -39,65 +40,44 @@ body{
     text-align: center;
 }
 
-
+.center {
+    text-align: center;
+}
 /* elements in initial screen */
 #welcome{
-    color:black;
-    font-size: 40px;
+    /* margin-top: 50px; */
+    padding-top: 50px;
+    color: #C3073F;
+    font-size: 150px;
     font-family: 'Nerko One', cursive;
     text-align: center;
+    margin-bottom: 50px;
 }
 
 #createLobby{
-    width: 200px;
-    height: 50px;
-    border: 3px solid black;
-    background-color: lightblue;
-    position: fixed;
-    top: 30%;
-    left: 44%;
+    background-color: #6F2232;
     font-weight: bold;
-    text-align: center;
-    font-size: 20px;
+    font-size: 50px;
     font-family: 'Nerko One', cursive;
-}
-
-.square{
-    height: 400px;
-    width: 400px;
-    border: 3px solid black;
-    position: fixed;
-    top: 20%;
-    left: 37%;
-    background-color: darkgrey;
+    color: white;
 }
 
 #roomInput{
-    width: 220px;
-    height: 30px;
     border: 3px solid black;
     background-color: white;
-    position: fixed;
-    top: 50%;
-    left: 43%;
     font-weight: bold;
-    text-align: center;
-    font-size: 20px;
+    font-size: 50px;
     font-family: 'Nerko One', cursive;
+    text-align: center;
 }
 
 #joinRoom{
-    width: 150px;
-    height: 40px;
-    border: 3px solid black;
-    background-color: lightblue;
-    position: fixed;
-    top: 57%;
-    left: 46%;
+    background-color: #6F2232;
     font-weight: bold;
-    text-align: center;
-    font-size: 20px;
+    font-size: 50px;
     font-family: 'Nerko One', cursive;
+    text-align: center;
+    color: white;
 }
 
 /* elements in game screen */
@@ -139,3 +119,20 @@ body{
 [type=radio]:checked + img {
     outline: 2px solid #f00;
   }
+
+.whiteText {
+    color: white;
+    font-family: 'Nerko One', cursive;
+}
+
+
+  /* no longer being used
+.square{
+    height: 400px;
+    width: 400px;
+    border: 3px solid black;
+    position: fixed;
+    top: 20%;
+    left: 37%;
+    background-color: darkgrey;
+} */
