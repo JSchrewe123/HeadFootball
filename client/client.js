@@ -9,7 +9,8 @@ const gameScreen = document.getElementById("gameScreen");
 const timer = document.getElementById("timer");
 const homeBtn = document.getElementById("home");
 const rematchBtn = document.getElementById("rematch");
-const score = document.getElementById("score");
+const score1 = document.getElementById("score1");
+const score2 = document.getElementById("score2");
 const readyScreen = document.getElementById("readyScreen");
 const readyBtn = document.getElementById("readyButton");
 const rematchScreen = document.getElementById("rematchScreen");
@@ -209,8 +210,10 @@ function paintGame(state) {
     }
 
     //updating score
-    let scoreMsg = state.players[0].goalsScored + ":" + state.players[1].goalsScored;
-    score.innerHTML = scoreMsg;
+    let scoreMsg = state.players[0].goalsScored;
+    score1.innerHTML = scoreMsg;
+    scoreMsg = state.players[1].goalsScored;
+    score2.innerHTML = scoreMsg
 
     // c.fillStyle = 'white';
     // c.fillRect(0,0,canvas.width,canvas.height);  

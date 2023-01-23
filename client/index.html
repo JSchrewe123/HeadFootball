@@ -11,17 +11,16 @@
 
     <div id="initialScreen">
         <h1 id="welcome">HeadFootball</h1>
-        <div class="center"><button id="createLobby">create new lobby</button></div>
+        <div class="center"><button id="createLobby" class="buttons">create new lobby</button></div>
         <br>
         <div class="center"><input id="roomInput" type="text"></div>
         <br>
-        <div class="center"><button id="joinRoom">Join a lobby</button></div>
+        <div class="center""><button id="joinRoom" class="buttons">Join a lobby</button></div>
     </div>
 
     <div id="waitScreen">
         <h1 class="whiteText">Waiting for friend to Join!</h1>
         <div id="message" class="whiteText"></div>
-        <!-- <button id="createGame">Create Game</button> -->
     </div>
 
     <!-- about to be added -->
@@ -39,7 +38,8 @@
             <input type="radio" value="3" name="playerSelect">
             <img src="./assets/mbappe_shoe_right.png" style="width:200px;height:200px;">  
         </label>
-        <button id="readyButton">Ready</button>
+        <br>
+        <button id="readyButton" class="buttons">Ready!</button>
     </div>
 
     <div id="waitRematchScreen">
@@ -48,21 +48,24 @@
 
     <div id="rematchScreen">
         <h1 class="whiteText">Opponent wants a rematch</h1>
-        <button id="acceptRematch">Accept</button>
-        <button id="declineRematch">Decline</button>
+        <button id="acceptRematch" class="buttons">Accept</button>
+        <button id="declineRematch" class="buttons">Decline</button>
     </div>
 
     <div id="gameScreen">
-        <div id="timer" class="whiteText">60</div>
-        <div id="score" class="whiteText"></div>
+        <div>
+            <div id="score1" class="whiteText"></div>
+            <div id="timer" class="whiteText">60</div>
+            <div id="score2" class="whiteText"></div>
+        </div>
         <canvas></canvas>
     </div>
 
     <div id="endScreen">
         <h1 class="whiteText">Thank you for playing!</h1>
         <h1 id="victoryMsg" class="whiteText"></h1>
-        <button id="home">Home</button>
-        <button id="rematch">Rematch</button>
+        <button id="home" class="buttons">Home</button>
+        <button id="rematch" class="buttons">Rematch</button>
     </div>
 
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
