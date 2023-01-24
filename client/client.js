@@ -147,6 +147,7 @@ createLobbyBtn.addEventListener("click", function(e){
 });
 
 homeBtn.addEventListener("click", function(e){
+    socket.emit("rematchDeclined");
     location.reload()
     return false;
 });
